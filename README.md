@@ -1,55 +1,25 @@
-# ESP8266_RTOS_SDK #
+# 使用ESP8266_RTOS_SDK创建项目连接氦氪云 #
 
 ----------
 
-ESP8266 SDK based on FreeRTOS.
+ESP8266 SDK 是基于 FreeRTOS.
    
-## Note ##
 
-APIs of "ESP8266_RTOS_SDK" are same as "ESP8266_NONOS_SDK"
+## 注册 ##
 
-More details in "Wiki" !
-
-## Requrements ##
-
-You can use both xcc and gcc to compile your project, gcc is recommended.
-For gcc, please refer to [esp-open-sdk](https://github.com/pfalcon/esp-open-sdk).
+1、创建注册任务 “cloud_register_task”
+2、使用 “TCP_connect_get_socket” 获取连接完成的 socket
+3、发送一串包含 “login” 注册字符到云端，等待云端响应，若响应数据中包含 “(getall )” 字符串
+      则注册成功
 
   
-## Compile ##
+## 设置 ##
 
-Clone ESP8266_RTOS_SDK, e.g., to ~/ESP8266_RTOS_SDK.
+1、注册成功后，发送包含 “setTermDetail” 字符串对设备做适当的配置
+2、配置无需等待应答成功
 
-    $git clone https://github.com/espressif/ESP8266_RTOS_SDK.git
+## 使用 ##
 
-Modify gen_misc.sh or gen_misc.bat:
-For Linux:
+1、创建数据接收任务 “user_tcp_recv_task” ，实时检测是否收到数据
+2、使用注册过程获取的 socket 就可以直接通信，氦氪云是使用明文通信的
 
-    $export SDK_PATH=~/ESP8266_RTOS_SDK
-    $export BIN_PATH=~/ESP8266_BIN
-
-For Windows:
-
-    set SDK_PATH=/c/ESP8266_RTOS_SDK
-    set BIN_PATH=/c/ESP8266_BIN
-
-ESP8266_RTOS_SDK/examples/project_template is a project template, you can copy this to anywhere, e.g., to ~/workspace/project_template.
-
-Generate bin: 
-For Linux:
-
-    ./gen_misc.sh
-
-For Windows:
-
-    gen_misc.bat
-   
-Just follow the tips and steps.
-
-## Download ##
-
-eagle.app.v6.flash.bin, downloads to flash 0x00000
-
-eagle.app.v6.irom0text.bin, downloads to flash 0x40000
-
-blank.bin, downloads to flash 0x7E000
